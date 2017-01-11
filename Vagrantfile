@@ -126,6 +126,7 @@ Vagrant.configure("2") do |config|
 
       ip = "172.17.8.#{i+100}"
       config.vm.network :private_network, ip: ip
+      config.vm.network :public_network, ip: "192.168.1.2"
 
       # Uncomment below to enable NFS for sharing the host machine into the coreos-vagrant VM.
       #config.vm.synced_folder ".", "/home/core/share", id: "core", :nfs => true, :mount_options => ['nolock,vers=3,udp']
@@ -142,6 +143,14 @@ Vagrant.configure("2") do |config|
         config.vm.provision :shell, :inline => "mv /tmp/vagrantfile-user-data /var/lib/coreos-vagrant/", :privileged => true
       end
 
-    end
+      # install docker-compose
+      config.vm.provision "shell", inline: <<-SHELL
+        sudo -i
+        mkdir -p /opt/bin
+        curl -L "https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-$(uname -m)" -o /opt/bin/docker-compose
+        chmod +x /opt/bin/docker-compose
+        exit
+      SHELL
+      end
   end
 end

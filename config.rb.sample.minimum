@@ -1,0 +1,7 @@
+$shared_folders = {
+  "c:/projects" => "/projects"
+}
+$forwarded_ports={
+  80    => 80,
+  8001  => 8001,
+}
